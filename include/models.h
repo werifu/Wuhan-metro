@@ -13,6 +13,9 @@
 
 #define MAX_EDGE_NUM_LEN 64
 
+#define STATION_STOP_TIME 60
+#define TWO_STATIONS_RUN_TIME 120
+
 typedef struct Metro Metro;
 typedef struct Station Station;
 typedef struct MetroContext MetroContext;
@@ -23,6 +26,7 @@ typedef struct MetroSystem MetroSystem;
 struct Metro {
     char            name[MAX_METRO_NAME_LEN];		// 地铁线路名称
     int 			length;                         //地铁物理长度
+    int             capacity;
     int 			stationNum;	                    //站点数
     Station*		stations[MAX_STATION_NUM_LEN];	//站点信息
     Edge*			edges[MAX_EDGE_NUM_LEN];		//各边信息
@@ -67,9 +71,9 @@ int InitMetroSystem();
 
 // Returns a new Metro filled with name & length. No stations and edges in it.
 //
-// Params: 1.(char*) the name of the metro; 2.(int) the physical length of the metro.
+// Params: 1.(char*) the name of the metro; 2.(int) the physical length of the metro. 3.(int)passenger capacity of the metro
 // Memory: Allocates sizeof(Metro)
-Metro* NewMetro(char* name, int length);
+Metro* NewMetro(char* name, int length, int capacity);
 
 // Returns a new Station filled with name & length. No MetroContext in it. Returns NULL if failing.
 //
@@ -77,7 +81,7 @@ Metro* NewMetro(char* name, int length);
 //         2.(Metro*) the metro the station is on;
 //         3&4.(int) posX/posY is the position of the station on a map;
 //         5.(int) id of the station on the current metro.
-// Memory: Allocates sizeof(Station)
+// Memory: Allocates sizeof(Station)+sizeof(StationContext) when there is no this station. Otherwise allocates sizeof(MetroContext).
 Station* NewStation(char* name, Metro* metro, int posX, int posY, int id);
 
 // Returns a new Edge filled with all properties.
@@ -102,6 +106,25 @@ int InitStationTable();
 // Memory: sizeof(MetroTable*)*METRO_TABLE_LEN
 int InitMetroTable();
 
+// Loads basic info of metros from "data/metros.csv"
+// Format of csv: metro_name,capacity,length,station_num
+// Returns TRUE if ok, returns ERROR if cannot open the file
+// Memory: Allocates sizeof(Metro) * Number of metros in the .csv
+int LoadMetros();
 
+// Loads basic info of metros from "data/stations.csv"
+// Format of csv: station_name,pos_x,pos_y,metro_name,id
+// Returns TRUE if ok, returns ERROR if cannot open the file
+// Memory: Allocates sizeof(Station) * Number of individual stations in the .csv (not duplicate)
+int LoadStations();
+
+// Called after LoadMetro() and LoadStations()
+// Along all metros fills the edges and contexts of the stations.
+// Returns TRUE if ok
+// Loads metro data from "data/metros.csv"
+int LoadEdgesAndContexts();
+
+// Along a metro.
+void FillContext(Metro*);
 #endif //WUHAN_METRO_MODELS_H
 

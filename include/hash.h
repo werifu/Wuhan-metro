@@ -28,7 +28,7 @@ Station* GetStation(StationTable ,char* name);
 
 // Inserts a new station into the stationTable;
 // Returns TRUE if ok, otherwise FALSE
-// No extra memory is allocated
+// Memory: Allocates sizeof(StationHash)
 int InsertStation(StationTable, Station*);
 
 
