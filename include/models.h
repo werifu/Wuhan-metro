@@ -13,7 +13,7 @@
 
 #define MAX_EDGE_NUM_LEN 64
 
-#define STATION_STOP_TIME 60
+#define STATION_STOP_ 60
 #define TWO_STATIONS_RUN_TIME 120
 
 typedef struct Metro Metro;
@@ -25,7 +25,7 @@ typedef struct MetroSystem MetroSystem;
 
 struct Metro {
     char            name[MAX_METRO_NAME_LEN];		// 地铁线路名称
-    int 			length;                         //地铁物理长度
+    double 			length;                         //地铁物理长度
     int             capacity;
     int 			stationNum;	                    //站点数
     Station*		stations[MAX_STATION_NUM_LEN];	//站点信息
@@ -34,8 +34,8 @@ struct Metro {
 
 struct Station {
     char 		    name[MAX_STATION_NAME_LEN]; //地铁线名字
-    int 		    posX;                       // 构造地图用的横坐标
-    int             posY;
+    double 		    longitude;                  // 构造地图用的经纬度
+    double          latitude;
     int			    metroNum;		            //所在线路条数
     MetroContext*   metroContexts[MAX_METRO_NUM_LEN];   // 铁道上下文
 };
@@ -54,8 +54,8 @@ struct Edge {
     Station* 		endStation;
     Metro* 			metro;			// 所在地铁线
     TrafficFlow* 	trafficFlow;	// 流量
-    int 			length;         // 物理长度
-    int				timeNeeded;     // 一次所需时间，单位s
+    double 			length;         // 物理长度
+    double		    timeNeeded;     // 一次所需时间，单位s
 };
 
 struct MetroSystem {
@@ -73,22 +73,22 @@ int InitMetroSystem();
 //
 // Params: 1.(char*) the name of the metro; 2.(int) the physical length of the metro. 3.(int)passenger capacity of the metro
 // Memory: Allocates sizeof(Metro)
-Metro* NewMetro(char* name, int length, int capacity);
+Metro* NewMetro(char* name, double length, int capacity);
 
 // Returns a new Station filled with name & length. No MetroContext in it. Returns NULL if failing.
 //
 // Params: 1.(char*) the name of the station;
 //         2.(Metro*) the metro the station is on;
-//         3&4.(int) posX/posY is the position of the station on a map;
+//         3&4.(double)
 //         5.(int) id of the station on the current metro.
 // Memory: Allocates sizeof(Station)+sizeof(StationContext) when there is no this station. Otherwise allocates sizeof(MetroContext).
-Station* NewStation(char* name, Metro* metro, int posX, int posY, int id);
+Station* NewStation(char* name, Metro* metro, double longitude, double latitude, int id);
 
 // Returns a new Edge filled with all properties.
 //
 // NULL: pointers variable can be NULL
 // Memory: Allocates sizeof(Edge)
-Edge* NewEdge(Station* startStation, Station* endStation, Metro* metro, TrafficFlow* trafficFlow, int length, int timeNeeded);
+Edge* NewEdge(Station* startStation, Station* endStation, Metro* metro, TrafficFlow* trafficFlow, double length, double timeNeeded);
 
 // Returns a new MetroContext filled with basic information: metro & id of the station
 //
@@ -113,7 +113,7 @@ int InitMetroTable();
 int LoadMetros();
 
 // Loads basic info of metros from "data/stations.csv"
-// Format of csv: station_name,pos_x,pos_y,metro_name,id
+// Format of csv: station_name,longitude,latitude,metro_name,id
 // Returns TRUE if ok, returns ERROR if cannot open the file
 // Memory: Allocates sizeof(Station) * Number of individual stations in the .csv (not duplicate)
 int LoadStations();
