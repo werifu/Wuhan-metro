@@ -16,12 +16,20 @@
 #define STATION_STOP_ 60
 #define TWO_STATIONS_RUN_TIME 120
 
+#define MAX_SPECIAL_CROWDEDS_LEN 6
+
+#define TRAFFIC_FLOW_TYPE_NUM 4
+
+#include "time.h"
+
 typedef struct Metro Metro;
 typedef struct Station Station;
 typedef struct MetroContext MetroContext;
 typedef struct Edge Edge;
 typedef struct TrafficFlow TrafficFlow;
 typedef struct MetroSystem MetroSystem;
+typedef struct SpecialCrowded SpecialCrowded;
+
 
 struct Metro {
     char            name[MAX_METRO_NAME_LEN];		// 地铁线路名称
@@ -64,11 +72,28 @@ struct MetroSystem {
 };
 
 
+struct SpecialCrowded{
+    int startHour;      // [0,23]
+    int startMinute;    //[0,59]
+    int endHour;
+    int endMinute;
+    double crowded; //(0,1)
+};
+
+struct TrafficFlow {
+    int             specialNum;
+    SpecialCrowded* specialCrowdeds[MAX_SPECIAL_CROWDEDS_LEN];
+    double          defaultCrowded;
+};
+
+
 // Inits the main Metro System. Returns the status(TRUE, FALSE, ERROR or PANIC) of the operation. Loads the data into the extern variable metroSystem defined in models.c
 //
 // Memory: Allocates sizeof(MetroSystem)
 int InitMetroSystem();
 
+// Inits
+int InitTrafficFlowTable();
 // Returns a new Metro filled with name & length. No stations and edges in it.
 //
 // Params: 1.(char*) the name of the metro; 2.(int) the physical length of the metro. 3.(int)passenger capacity of the metro
@@ -126,5 +151,8 @@ int LoadEdgesAndContexts();
 
 // Along a metro.
 void FillContext(Metro*);
+
+
+int AddSpecialCrowd(int typeID, int startHour, int startMin, int endHour, int endMin, double crowded);
 #endif //WUHAN_METRO_MODELS_H
 

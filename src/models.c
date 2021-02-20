@@ -11,6 +11,7 @@
 MetroSystem* metroSystem;
 StationTable stationTable;
 MetroTable metroTable;
+TrafficFlow* trafficFlowTable[TRAFFIC_FLOW_TYPE_NUM];
 
 int InitMetroSystem() {
     metroSystem = (MetroSystem*)malloc(sizeof(MetroSystem));
@@ -22,8 +23,15 @@ int InitStationTable() {
     stationTable = (StationTable)malloc(sizeof(StationHash*) * STATION_TABLE_LEN);
     for (int i = 0; i < STATION_TABLE_LEN; i++) {
         stationTable[i] = (StationHash*)malloc(sizeof(StationHash));
+        if (stationTable[i] == NULL) printf("cannot allocate StationHash\n");
         stationTable[i]->cur = NULL;
         stationTable[i]->next = NULL;
+    }
+
+    for (int i = 0; i < STATION_TABLE_LEN;i++) {
+        if (stationTable[i] == NULL) {
+            printf("stationTable[%d] is NULL", i);
+        }
     }
     return TRUE;
 }
@@ -38,6 +46,42 @@ int InitMetroTable() {
     return TRUE;
 }
 
+int InitTrafficFlowTable() {
+    // type0: work
+    trafficFlowTable[0] = (TrafficFlow*)malloc(sizeof(TrafficFlow));
+    trafficFlowTable[0]->defaultCrowded = 0.4;
+    AddSpecialCrowd(0, 7, 30, 9, 0, 0.8);
+    AddSpecialCrowd(0, 16, 30, 18, 30, 0.75);
+
+    // type1: shopping
+    trafficFlowTable[1] = (TrafficFlow*)malloc(sizeof(TrafficFlow));
+    trafficFlowTable[1]->defaultCrowded = 0.2;
+    AddSpecialCrowd(1, 9, 30, 15, 0, 0.65);
+
+    // type2: attainment
+    trafficFlowTable[2] = (TrafficFlow*)malloc(sizeof(TrafficFlow));
+    trafficFlowTable[2]->defaultCrowded = 0.15;
+    AddSpecialCrowd(2, 19, 0, 22, 0, 0.65);
+
+    // type3: cities
+    trafficFlowTable[3] = (TrafficFlow*)malloc(sizeof(TrafficFlow));
+    trafficFlowTable[3]->defaultCrowded = 0.5;
+
+    return TRUE;
+}
+
+int AddSpecialCrowd(int typeID, int startHour, int startMin, int endHour, int endMin, double crowded) {
+    SpecialCrowded* newCrowded = (SpecialCrowded*)malloc(sizeof(SpecialCrowded));
+    newCrowded->startHour = startHour;
+    newCrowded->endHour = endHour;
+    newCrowded->startMinute = startMin;
+    newCrowded->endMinute = endMin;
+    newCrowded->crowded = crowded;
+    int specialNum = trafficFlowTable[typeID]->specialNum;
+    trafficFlowTable[typeID]->specialCrowdeds[specialNum] = newCrowded;
+    trafficFlowTable[typeID]->specialNum++;
+    return TRUE;
+}
 Metro* NewMetro(char* name, double length, int capacity) {
     Metro* metro = (Metro*)malloc(sizeof(Metro));
     strcpy(metro->name, name);

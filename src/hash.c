@@ -26,8 +26,9 @@ Station* GetStation(StationTable stationTable,char* name) {
     unsigned int hash = get_string_hash(name);
     hash = hash % STATION_TABLE_LEN;
     StationHash* curHash = stationTable[hash];
-    while (curHash->cur) {
-        if (strcmp(name, curHash->cur->name) == 0) {
+
+    while (curHash) {
+        if (curHash->cur && strcmp(name, curHash->cur->name) == 0) {
             return curHash->cur;
         }
         curHash = curHash->next;
@@ -59,8 +60,8 @@ Metro* GetMetro(MetroTable metroTable, char* name) {
     unsigned int hash = get_string_hash(name);
     hash = hash % METRO_TABLE_LEN;
     MetroHash* curHash = metroTable[hash];
-    while (curHash->cur) {
-        if (strcmp(name, curHash->cur->name) == 0) {
+    while (curHash) {
+        if (curHash->cur && strcmp(name, curHash->cur->name) == 0) {
             return curHash->cur;
         }
         curHash = curHash->next;

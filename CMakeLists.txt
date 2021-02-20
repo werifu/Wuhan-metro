@@ -9,4 +9,4 @@ aux_source_directory (src SRC_LIST)
 
 include_directories (include)
 
-add_executable (main ${SRC_LIST} src/models.c include/models.h src/hash.c include/hash.h include/common.h src/common.c src/utils.c include/utils.h src/fare.c include/fare.h src/time.c include/time.h src/paths.c include/paths.h)
+add_executable (main ${SRC_LIST} src/models.c include/models.h src/hash.c include/hash.h include/common.h src/common.c src/utils.c include/utils.h src/fare.c include/fare.h src/time.c include/time.h src/paths.c include/paths.h src/test.c include/test.h)
