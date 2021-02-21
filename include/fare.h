@@ -6,5 +6,5 @@
 #define WUHAN_METRO_FARE_H
 
 // Returns fare needed(0.01yuan) through length(m)
-int GetFare(int length);
+int GetFare(double length);
 #endif //WUHAN_METRO_FARE_H

@@ -48,7 +48,18 @@ int TestGetStation() {
     return TRUE;
 }
 
-int TestTraverseMetro(char* name) {
-
+int TestFlowType(char* metroName) {
+    Metro* metro = GetMetro(metroTable, metroName);
+    if (!metro) {
+        printf("无此地铁:%s\n", metroName);
+        return FALSE;
+    }
+    TrafficFlow* flow = metro->trafficFlow;
+    printf("metro %s's default crowded: %f\n", metro->name, flow->defaultCrowded);
+    for (int i = 0; i < flow->specialNum; i++) {
+        SpecialCrowded* crd = flow->specialCrowdeds[i];
+        printf("(%2d:%02d,%2d:%02d)=>%f\n", crd->startHour, crd->startMinute, crd->endHour, crd->endMinute, crd->crowded);
+    }
     return TRUE;
 }
+

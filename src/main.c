@@ -11,10 +11,11 @@ int main() {
     InitMetroSystem();
     InitStationTable();
     InitMetroTable();
+    InitTrafficFlowTable();
 
     LoadMetros();
     LoadStations();
     LoadEdgesAndContexts();
-    TestGetStation();
+
     return 0;
 }

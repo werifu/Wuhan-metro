@@ -8,10 +8,10 @@
 #include "models.h"
 typedef struct Path Path;
 struct Path {
-    int stationNum;
-    Station* stationsOnPath[MAX_STATION_NUM_LEN];
-    int interchangeNum;
-    Station* interchangeStations[MAX_STATION_NUM_LEN];
+    int edgeNum;
+    Edge* edgesOnPath[MAX_STATION_NUM_LEN];
+    int transferNum;
+    Station* transferStations[MAX_STATION_NUM_LEN];
     int length;
     int fare;
 };

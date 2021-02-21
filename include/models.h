@@ -13,14 +13,15 @@
 
 #define MAX_EDGE_NUM_LEN 64
 
-#define STATION_STOP_ 60
+#define STATION_STOP_TIME 60
 #define TWO_STATIONS_RUN_TIME 120
+#define TRANSFER_TIME 210
 
 #define MAX_SPECIAL_CROWDEDS_LEN 6
 
 #define TRAFFIC_FLOW_TYPE_NUM 4
 
-#include "time.h"
+#include "metro_time.h"
 
 typedef struct Metro Metro;
 typedef struct Station Station;
@@ -38,6 +39,7 @@ struct Metro {
     int 			stationNum;	                    //站点数
     Station*		stations[MAX_STATION_NUM_LEN];	//站点信息
     Edge*			edges[MAX_EDGE_NUM_LEN];		//各边信息
+    TrafficFlow* 	trafficFlow;	// 流量
 };
 
 struct Station {
@@ -61,7 +63,6 @@ struct Edge {
     Station* 		startStation;	// 起点站（起->终表明了方向）
     Station* 		endStation;
     Metro* 			metro;			// 所在地铁线
-    TrafficFlow* 	trafficFlow;	// 流量
     double 			length;         // 物理长度
     double		    timeNeeded;     // 一次所需时间，单位s
 };
@@ -96,9 +97,12 @@ int InitMetroSystem();
 int InitTrafficFlowTable();
 // Returns a new Metro filled with name & length. No stations and edges in it.
 //
-// Params: 1.(char*) the name of the metro; 2.(int) the physical length of the metro. 3.(int)passenger capacity of the metro
+// Params:  1.(char*) the name of the metro;
+//          2.(int) the physical length of the metro.
+//          3.(int)passenger capacity of the metro.
+//          4.(TrafficFlow*)
 // Memory: Allocates sizeof(Metro)
-Metro* NewMetro(char* name, double length, int capacity);
+Metro* NewMetro(char* name, double length, int capacity, TrafficFlow* trafficFlow);
 
 // Returns a new Station filled with name & length. No MetroContext in it. Returns NULL if failing.
 //
@@ -113,7 +117,7 @@ Station* NewStation(char* name, Metro* metro, double longitude, double latitude,
 //
 // NULL: pointers variable can be NULL
 // Memory: Allocates sizeof(Edge)
-Edge* NewEdge(Station* startStation, Station* endStation, Metro* metro, TrafficFlow* trafficFlow, double length, double timeNeeded);
+Edge* NewEdge(Station* startStation, Station* endStation, Metro* metro, double length, double timeNeeded);
 
 // Returns a new MetroContext filled with basic information: metro & id of the station
 //
@@ -152,7 +156,8 @@ int LoadEdgesAndContexts();
 // Along a metro.
 void FillContext(Metro*);
 
-
 int AddSpecialCrowd(int typeID, int startHour, int startMin, int endHour, int endMin, double crowded);
+
+int ChooseFlowType(const char* type);
 #endif //WUHAN_METRO_MODELS_H
 

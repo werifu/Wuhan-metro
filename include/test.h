@@ -6,4 +6,5 @@
 #define WUHAN_METRO_TEST_H
 
 int TestGetStation();
+int TestFlowType(char* metroName);
 #endif //WUHAN_METRO_TEST_H

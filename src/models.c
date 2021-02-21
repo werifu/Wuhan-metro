@@ -58,7 +58,7 @@ int InitTrafficFlowTable() {
     trafficFlowTable[1]->defaultCrowded = 0.2;
     AddSpecialCrowd(1, 9, 30, 15, 0, 0.65);
 
-    // type2: attainment
+    // type2: entertainment
     trafficFlowTable[2] = (TrafficFlow*)malloc(sizeof(TrafficFlow));
     trafficFlowTable[2]->defaultCrowded = 0.15;
     AddSpecialCrowd(2, 19, 0, 22, 0, 0.65);
@@ -68,6 +68,19 @@ int InitTrafficFlowTable() {
     trafficFlowTable[3]->defaultCrowded = 0.5;
 
     return TRUE;
+}
+
+
+int ChooseFlowType(const char* type) {
+    if (strcmp(type, "work") == 0) {
+        return 0;
+    } else if (strcmp(type, "shopping") == 0) {
+        return 1;
+    } else if (strcmp(type, "entertainment") == 0) {
+        return 2;
+    } else {
+        return 3; // default: cities
+    }
 }
 
 int AddSpecialCrowd(int typeID, int startHour, int startMin, int endHour, int endMin, double crowded) {
@@ -82,12 +95,15 @@ int AddSpecialCrowd(int typeID, int startHour, int startMin, int endHour, int en
     trafficFlowTable[typeID]->specialNum++;
     return TRUE;
 }
-Metro* NewMetro(char* name, double length, int capacity) {
+
+
+Metro* NewMetro(char* name, double length, int capacity, TrafficFlow* trafficFlow) {
     Metro* metro = (Metro*)malloc(sizeof(Metro));
     strcpy(metro->name, name);
     metro->length = length;
     metro->stationNum = 0;
     metro->capacity = capacity;
+    metro->trafficFlow = trafficFlow;
     return metro;
 }
 
@@ -117,12 +133,11 @@ MetroContext* NewMetroContext(Metro* metro, int id) {
 }
 
 
-Edge* NewEdge(Station* startStation, Station* endStation, Metro* metro, TrafficFlow* trafficFlow, double length, double timeNeeded) {
+Edge* NewEdge(Station* startStation, Station* endStation, Metro* metro, double length, double timeNeeded) {
     Edge* edge = (Edge*)malloc(sizeof(Edge));
     edge->startStation = startStation;
     edge->endStation = endStation;
     edge->metro = metro;
-    edge->trafficFlow = trafficFlow;
     edge->length = length;
     edge->timeNeeded = timeNeeded;
     return edge;
@@ -139,16 +154,26 @@ int LoadMetros() {
     fgets(line, 1024, fp);
 
     char name[MAX_METRO_NAME_LEN];
+    char flowTypeName[20];
     double length;
-    int capacity;
+    int capacity, flowTypeID;
     while (fgets(line, 1024, fp)) {
         const char* tok = strtok(line, ",");
         strcpy(name, tok);
+
         tok = strtok(NULL,",");
         capacity = atoi(tok);
+
         tok = strtok(NULL,",");
         length = atof(tok);
-        Metro* metro = NewMetro(name, length, capacity);
+
+        // station nums
+        strtok(NULL,",");
+
+        tok = strtok(NULL,"\n");
+        strcpy(flowTypeName,tok);
+        flowTypeID = ChooseFlowType(flowTypeName);
+        Metro* metro = NewMetro(name, length, capacity, trafficFlowTable[flowTypeID]);
 
         InsertMetro(metroTable, metro);
     }
@@ -225,7 +250,7 @@ int LoadEdgesAndContexts() {
         }
         double length = all_length/num;
         for (int i = 2; i <= num; i++) {
-            Edge* edge = NewEdge(metro->stations[i-1], metro->stations[i], metro, NULL, length, TWO_STATIONS_RUN_TIME);
+            Edge* edge = NewEdge(metro->stations[i-1], metro->stations[i], metro, length, TWO_STATIONS_RUN_TIME);
             metro->edges[i-1] = edge;
         }
         FillContext(metro);

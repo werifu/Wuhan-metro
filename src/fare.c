@@ -5,41 +5,41 @@
 #include "fare.h"
 
 // make optimization
-int GetFare(int length) {
+int GetFare(double length) {
     int fare = 0;
-    int tmp_len;
+    double tmp_len;
     // 50km = 50000m
-    tmp_len = length-50000;
+    tmp_len = length-50;
     if (tmp_len > 0) {
-        fare += tmp_len/200 + 100;
-        fare += 900;
+        fare += (int)(tmp_len/20) + 1;
+        fare += 9;
         return fare;
     }
-    tmp_len = length-40000;
+    tmp_len = length-40;
     if (tmp_len > 0) {
-        fare += tmp_len/100 + 100;
-        fare += 800;
+        fare += (int)(tmp_len/10) + 1;
+        fare += 8;
         return fare;
     }
-    tmp_len = length-24000;
+    tmp_len = length-24;
     if (tmp_len > 0) {
-        fare += tmp_len/80 + 100;
-        fare += 600;
+        fare += (int)(tmp_len/8) + 1;
+        fare += 6;
         return fare;
     }
-    tmp_len = length-12000;
+    tmp_len = length-12;
     if (tmp_len > 0) {
-        fare += tmp_len/60 + 100;
-        fare += 400;
+        fare += (int)(tmp_len/6) + 1;
+        fare += 4;
         return fare;
     }
-    tmp_len = length-4000;
+    tmp_len = length-4;
     if (tmp_len > 0) {
-        fare += tmp_len/40 + 100;
-        fare += 200;
+        fare += (int)tmp_len/4 + 1;
+        fare += 2;
         return fare;
     }
-    fare = 200;
+    fare = 2;
     return fare;
 }
 
