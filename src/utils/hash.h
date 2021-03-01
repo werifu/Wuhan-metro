@@ -2,7 +2,7 @@
 // Created by chen on 2/17/21.
 // Provided a Hash Table for the stations created
 //
-#include "models.h"
+#include "../models/models.h"
 #include "string.h"
 #ifndef WUHAN_METRO_STATION_HASH_H
 #define WUHAN_METRO_STATION_HASH_H

@@ -3,7 +3,7 @@
 //
 
 #include "hash.h"
-#include "common.h"
+#include "../models/common.h"
 #include "malloc.h"
 // s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]
 unsigned int get_string_hash(char* name) {

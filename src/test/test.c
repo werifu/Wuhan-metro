@@ -4,9 +4,9 @@
 
 #include "test.h"
 #include "stdio.h"
-#include "common.h"
-#include "models.h"
-#include "hash.h"
+#include "../models/common.h"
+#include "../models/models.h"
+#include "../utils/hash.h"
 
 extern MetroSystem* metroSystem;
 extern StationTable stationTable;
