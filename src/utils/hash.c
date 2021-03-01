@@ -5,6 +5,11 @@
 #include "hash.h"
 #include "../models/common.h"
 #include "malloc.h"
+
+StationTable stationTable;
+MetroTable metroTable;
+TrafficFlow* trafficFlowTable[TRAFFIC_FLOW_TYPE_NUM];
+
 // s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]
 unsigned int get_string_hash(char* name) {
     int n = (int)strlen(name);
@@ -21,7 +26,7 @@ unsigned int get_string_hash(char* name) {
     return hash;
 }
 
-Station* GetStation(StationTable stationTable,char* name) {
+Station* GetStation(char* name) {
     if (!name) return NULL;
     unsigned int hash = get_string_hash(name);
     hash = hash % STATION_TABLE_LEN;
@@ -36,7 +41,7 @@ Station* GetStation(StationTable stationTable,char* name) {
     return NULL;
 }
 
-int InsertStation(StationTable stationTable, Station* station) {
+int InsertStation(Station* station) {
     if (!station) return FALSE;
     unsigned int hash = get_string_hash(station->name);
     hash = hash % STATION_TABLE_LEN;
@@ -55,7 +60,7 @@ int InsertStation(StationTable stationTable, Station* station) {
     return TRUE;
 }
 
-Metro* GetMetro(MetroTable metroTable, char* name) {
+Metro* GetMetro(char* name) {
     if (!name) return NULL;
     unsigned int hash = get_string_hash(name);
     hash = hash % METRO_TABLE_LEN;
@@ -69,7 +74,7 @@ Metro* GetMetro(MetroTable metroTable, char* name) {
     return NULL;
 }
 
-int InsertMetro(MetroTable metroTable, Metro* metro) {
+int InsertMetro(Metro* metro) {
     if (!metro) return FALSE;
     unsigned int hash = get_string_hash(metro->name);
     hash = hash % METRO_TABLE_LEN;

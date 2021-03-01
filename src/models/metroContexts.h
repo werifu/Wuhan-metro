@@ -13,7 +13,9 @@
 MetroContext* NewMetroContext(Metro* metro, int id);
 
 
-// Along a metro.
+// All contexts are already created when loading stations.
+// Call this func after loading all stations
+// No extra memory used.
 void FillContext(Metro*);
 
 #endif //WUHAN_METRO_METROCONTEXTS_H

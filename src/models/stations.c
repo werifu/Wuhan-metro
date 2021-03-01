@@ -59,7 +59,7 @@ int LoadStations() {
 
         tok = strtok(NULL, ",");
         strcpy(metro_name, tok);
-        Metro* metro = GetMetro(metroTable, metro_name);
+        Metro* metro = GetMetro(metro_name);
         if (!metro) {
             fprintf(stderr, "Metro %s Not Found\n", metro_name);
             continue;
@@ -69,10 +69,12 @@ int LoadStations() {
         id = atoi(tok);
 
         Station* station = NewStation(name, metro, longitude, latitude, id);
-        if (!GetStation(stationTable, station->name)) {
-            InsertStation(stationTable, station);
+        if (!GetStation(station->name)) {
+            InsertStation(station);
         }
         metro->stationNum++;
+
+        // id begins with 1 (This system only this one begins with 1)
         metro->stations[id] = station;
     }
     return TRUE;
@@ -80,7 +82,7 @@ int LoadStations() {
 
 
 Station* NewStation(char* name, Metro* metro, double longitude, double latitude, int id) {
-    Station* station = GetStation(stationTable, name);
+    Station* station = GetStation(name);
     if (!station) {
         station = (Station *) malloc(sizeof(Station));
         station->metroNum = 0;

@@ -4,7 +4,8 @@
 #include "models/edges.h"
 #include "models/trafficFlows.h"
 #include "utils/hash.h"
-
+#include "stdio.h"
+#include "test/traverse.h"
 
 extern MetroSystem* metroSystem;
 extern StationTable stationTable;

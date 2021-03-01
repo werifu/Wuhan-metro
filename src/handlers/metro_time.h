@@ -10,7 +10,7 @@
 #include "../models/common.h"
 #include "handler_models.h"
 
-
+// Consists of station2station_time, station_waiting_time, crowd_level
 double GetPathTime(Path* path, Time* now);
 
 int isDuring(SpecialCrowded* spc, Time* now);

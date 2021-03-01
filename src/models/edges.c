@@ -38,7 +38,7 @@ int LoadEdgesAndContexts() {
         const char* tok = strtok(line, ",");
         strcpy(name, tok);
 
-        Metro* metro = GetMetro(metroTable, name);
+        Metro* metro = GetMetro(name);
         double all_length = metro->length;
         int num = metro->stationNum;
         if (num == 0) {

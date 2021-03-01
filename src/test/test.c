@@ -14,7 +14,7 @@ extern MetroTable metroTable;
 
 int TestGetStation() {
     char name[] = "宏图大道";
-    Station* station1 = GetStation(stationTable, name);
+    Station* station1 = GetStation(name);
     if (!station1) {
         printf("station %s not exists\n", name);
         return FALSE;
@@ -49,7 +49,7 @@ int TestGetStation() {
 }
 
 int TestFlowType(char* metroName) {
-    Metro* metro = GetMetro(metroTable, metroName);
+    Metro* metro = GetMetro(metroName);
     if (!metro) {
         printf("无此地铁:%s\n", metroName);
         return FALSE;

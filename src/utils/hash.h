@@ -24,12 +24,12 @@ struct StationHash {
 
 
 // Returns the station found via its name. Returns NULL if not found.
-Station* GetStation(StationTable ,char* name);
+Station* GetStation(char* name);
 
 // Inserts a new station into the stationTable;
 // Returns TRUE if ok, otherwise FALSE
 // Memory: Allocates sizeof(StationHash)
-int InsertStation(StationTable, Station*);
+int InsertStation(Station*);
 
 
 //==================================
@@ -44,12 +44,12 @@ struct MetroHash {
 
 
 // Returns the metro found via its name. Returns NULL if not found.
-Metro* GetMetro(MetroTable, char* name);
+Metro* GetMetro(char* name);
 
 // Inserts a new metro into the metroTable;
 // Returns TRUE if ok, otherwise FALSE
 // No extra memory is allocated
-int InsertMetro(MetroTable, Metro*);
+int InsertMetro(Metro*);
 
 
 //==================================

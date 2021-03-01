@@ -9,6 +9,7 @@
 #include "stdlib.h"
 #include "trafficFlows.h"
 
+// defined in hash.c
 extern MetroSystem* metroSystem;
 extern MetroTable metroTable;
 extern TrafficFlow* trafficFlowTable[TRAFFIC_FLOW_TYPE_NUM];
@@ -28,8 +29,6 @@ int InitMetroTable() {
     }
     return TRUE;
 }
-
-
 
 
 int LoadMetros() {
@@ -62,8 +61,9 @@ int LoadMetros() {
         strcpy(flowTypeName,tok);
         flowTypeID = ChooseFlowType(flowTypeName);
         Metro* metro = NewMetro(name, length, capacity, trafficFlowTable[flowTypeID]);
+        InsertMetro(metro);
 
-        InsertMetro(metroTable, metro);
+        metroSystem->metros[metroSystem->metroNum++] = metro;
     }
     return TRUE;
 }
