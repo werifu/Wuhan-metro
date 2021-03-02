@@ -11,8 +11,9 @@
 
 extern StationTable stationTable;
 extern MetroTable metroTable;
+extern TransferStationGraph* tsfStationGraph;
 
-
+extern MetroSystem* metroSystem;
 int InitStationTable() {
     stationTable = (StationTable)malloc(sizeof(StationHash*) * STATION_TABLE_LEN);
     for (int i = 0; i < STATION_TABLE_LEN; i++) {
@@ -29,7 +30,6 @@ int InitStationTable() {
     }
     return TRUE;
 }
-
 
 
 
@@ -96,3 +96,39 @@ Station* NewStation(char* name, Metro* metro, double longitude, double latitude,
 
     return station;
 }
+
+
+typedef struct tmpTransfers tmpTransfers;
+struct tmpTransfers {
+    Metro* metro;
+    int tsfStationNum;
+    Station* tsfStations[MAX_STATION_NUM_LEN];
+};
+
+int LoadTransferStationGraph() {
+    tmpTransfers* tmp_transfers_arr[MAX_METRO_NUM_LEN];
+    // adj table of each metro
+    int metroNum = metroSystem->metroNum;
+    for (int i = 0; i < metroNum; i++) {
+        Metro* metro = metroSystem->metros[i];
+        tmp_transfers_arr[i] = (tmpTransfers*)malloc(sizeof(tmpTransfers));
+        tmp_transfers_arr[i]->metro = metro;
+        tmp_transfers_arr[i]->tsfStationNum = 0;
+
+        int stationNum = metro->stationNum;
+        for (int id = 1; id <= stationNum; id++) {
+            Station* station = metro->stations[id];
+            if (station->metroNum == 1) continue;
+            tmp_transfers_arr[i]->tsfStations[tmp_transfers_arr[i]->tsfStationNum++] = station;
+        }
+    }
+
+//    for (int i = 0; i < metroNum; i++) {
+//        int n = tmp_transfers_arr[i]->tsfStationNum;
+//        for (int j = 0; j < n; j++) {
+//
+//        }
+//    }
+    return TRUE;
+}
+

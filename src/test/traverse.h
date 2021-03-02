@@ -8,4 +8,6 @@
 int TraverseSystem();
 
 void DFS_System();
+
+int TraverseMetroViaEdge(char* name);
 #endif //WUHAN_METRO_TRAVERSE_H

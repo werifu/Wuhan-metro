@@ -3,6 +3,5 @@
 //
 
 #include "models.h"
-#include "../utils/hash.h"
-
 MetroSystem* metroSystem;
+TransferStationGraph* tsfStationGraph;

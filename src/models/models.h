@@ -21,6 +21,7 @@
 
 #define TRAFFIC_FLOW_TYPE_NUM 4
 
+#define TRANSFER_STATION_NUM_PER_METRO 10
 
 
 typedef struct Metro Metro;
@@ -30,8 +31,8 @@ typedef struct Edge Edge;
 typedef struct TrafficFlow TrafficFlow;
 typedef struct MetroSystem MetroSystem;
 typedef struct SpecialCrowded SpecialCrowded;
-
-
+typedef struct TransferStationGraph TransferStationGraph;
+typedef struct TransferStationNode TransferStationNode;
 struct Metro {
     char            name[MAX_METRO_NAME_LEN];		// 地铁线路名称
     double 			length;                         //地铁物理长度
@@ -72,7 +73,7 @@ struct MetroSystem {
     Metro*          metros[MAX_METRO_NUM_LEN];
 };
 
-
+// A state of a crowd: from hh:mm to hh:mm what the crowded(0~1) of a metro is
 struct SpecialCrowded{
     int startHour;      // [0,23]
     int startMinute;    //[0,59]
@@ -88,6 +89,21 @@ struct TrafficFlow {
 };
 
 
+struct TransferStationGraph {
+    int tsfStationNum;
+    TransferStationNode* tsfStationNodes[MAX_STATION_NUM_LEN];
+};
 
+
+struct TransferStationNode {
+    Station*    station;
+    Station*    lastNode;
+    double      costToHere; // the metrics to this node from a start node
+    int         known;
+
+    int         adjNum;
+    TransferStationNode* adjNodes[TRANSFER_STATION_NUM_PER_METRO];
+    double      edgeCosts[TRANSFER_STATION_NUM_PER_METRO]; // with the above attr
+};
 #endif //WUHAN_METRO_MODELS_H
 

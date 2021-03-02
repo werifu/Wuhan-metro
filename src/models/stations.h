@@ -29,4 +29,14 @@ int LoadStations();
 // Memory: Allocates sizeof(Station)+sizeof(StationContext) when there is no this station. Otherwise allocates sizeof(MetroContext).
 Station* NewStation(char* name, Metro* metro, double longitude, double latitude, int id);
 
+
+
+int LoadTransferStationGraph();
+
+
+
+TransferStationNode* NewTransferNode();
+
+
+
 #endif //WUHAN_METRO_STATIONS_H
