@@ -17,10 +17,7 @@ typedef struct Path Path;
 struct Path {
     int edgeNum;
     Edge* edgesOnPath[MAX_STATION_NUM_LEN];
-    int transferNum;
-    Station* transferStations[MAX_STATION_NUM_LEN];
-    int length;
-    int fare;
+    double length;
 };
 
 #endif //WUHAN_METRO_HANDLER_MODELS_H

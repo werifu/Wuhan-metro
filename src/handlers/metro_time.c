@@ -47,7 +47,8 @@ double GetPathTime(Path* path, Time* now) {
         double coefficient = GetTimeCoefficient(crowded);
         result += (TWO_STATIONS_RUN_TIME+STATION_STOP_TIME)*coefficient;
     }
-    int transferNum = path->transferNum;
+
+    int transferNum = GetTransferNum(path);
     result += transferNum * TRANSFER_TIME;
     return result;
 }

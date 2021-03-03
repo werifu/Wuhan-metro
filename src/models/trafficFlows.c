@@ -60,3 +60,4 @@ int AddSpecialCrowd(int typeID, int startHour, int startMin, int endHour, int en
     trafficFlowTable[typeID]->specialNum++;
     return TRUE;
 }
+

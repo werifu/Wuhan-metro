@@ -10,6 +10,7 @@
 
 #define MAX_STATION_NAME_LEN 64
 #define MAX_STATION_NUM_LEN 64
+#define MAX_ALL_STATION_NUM 250
 
 #define MAX_EDGE_NUM_LEN 64
 
@@ -21,7 +22,7 @@
 
 #define TRAFFIC_FLOW_TYPE_NUM 4
 
-#define TRANSFER_STATION_NUM_PER_METRO 10
+#define TRANSFER_STATION_NUM_PER_METRO 30
 
 
 typedef struct Metro Metro;
@@ -49,6 +50,10 @@ struct Station {
     double          latitude;
     int			    metroNum;		            //所在线路条数
     MetroContext*   metroContexts[MAX_METRO_NUM_LEN];   // 铁道上下文
+
+    double      costToHere; // the metrics to this node from a start node
+    int         known;
+    Station*    last_node;
 };
 
 struct MetroContext {
@@ -71,6 +76,8 @@ struct Edge {
 struct MetroSystem {
     int             metroNum;   // 地铁线路总情况
     Metro*          metros[MAX_METRO_NUM_LEN];
+    int             stationNum;
+    Station*        stations[MAX_ALL_STATION_NUM];
 };
 
 // A state of a crowd: from hh:mm to hh:mm what the crowded(0~1) of a metro is
@@ -97,13 +104,14 @@ struct TransferStationGraph {
 
 struct TransferStationNode {
     Station*    station;
-    Station*    lastNode;
-    double      costToHere; // the metrics to this node from a start node
-    int         known;
-
     int         adjNum;
     TransferStationNode* adjNodes[TRANSFER_STATION_NUM_PER_METRO];
     double      edgeCosts[TRANSFER_STATION_NUM_PER_METRO]; // with the above attr
+
+    // all below are loaded and used dynamically
+    TransferStationNode*    lastNode;
+    double      costToHere; // the metrics to this node from a start node
+    int         known;
 };
 #endif //WUHAN_METRO_MODELS_H
 

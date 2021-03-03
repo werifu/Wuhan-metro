@@ -3,11 +3,11 @@
 //
 #include "stdio.h"
 #include "traverse.h"
-#include "../models/models.h"
+
 #include "../models/common.h"
 #include "../utils/hash.h"
 extern MetroSystem* metroSystem;
-
+extern TransferStationGraph* tsfStationGraph;
 
 int TraverseSystem() {
     int n = metroSystem->metroNum;
@@ -48,4 +48,50 @@ int TraverseMetroViaEdge(char* metroName) {
         }
     }
     return TRUE;
+}
+
+
+void PrintGraph() {
+    int n = tsfStationGraph->tsfStationNum;
+    for (int i = 0; i < n; i++) {
+        TransferStationNode* node = tsfStationGraph->tsfStationNodes[i];
+        printf("station:%s, it's on ", node->station->name);
+        int metroNum = node->station->metroNum;
+        for (int j = 0; j < metroNum; j++) {
+            printf("%s, ", node->station->metroContexts[j]->metro->name);
+        }
+        printf("its adj vertexes are: ");
+        for (int j = 0; j < node->adjNum; j++) {
+            printf("%s,", node->adjNodes[j]->station->name);
+        }
+        printf("\n");
+    }
+}
+
+
+void PrintAdjVertex() {
+    int n = metroSystem->stationNum;
+    printf("There are %d stations:\n", n);
+    for (int i = 0; i < n; i++) {
+        Station* station = metroSystem->stations[i];
+        printf("%s\t adj vertexes: ", station->name);
+        int m = station->metroNum;
+        for (int j = 0; j < m; j++) {
+            MetroContext* ctx = station->metroContexts[j];
+            char last[30];
+            strcpy(last, ctx->lastStation? ctx->lastStation->name: "不存在");
+            char next[30];
+            strcpy(next, ctx->nextStation? ctx->nextStation->name: "不存在");
+            printf("%s,%s,", last, next);
+        }
+        printf("\n");
+    }
+}
+
+void PrintFromDest(Station* station) {
+    while (station->last_node) {
+        printf("%s<-", station->name);
+        station = station->last_node;
+    }
+    printf("%s\n", station->name);
 }

@@ -4,10 +4,16 @@
 
 #ifndef WUHAN_METRO_TRAVERSE_H
 #define WUHAN_METRO_TRAVERSE_H
-
+#include "../models/models.h"
 int TraverseSystem();
 
 void DFS_System();
 
 int TraverseMetroViaEdge(char* name);
+
+void PrintGraph();
+
+void PrintAdjVertex();
+
+void PrintFromDest(Station* station);
 #endif //WUHAN_METRO_TRAVERSE_H

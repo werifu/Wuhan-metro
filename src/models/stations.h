@@ -35,8 +35,17 @@ int LoadTransferStationGraph();
 
 
 
-TransferStationNode* NewTransferNode();
+TransferStationNode* NewTransferNode(Station*);
 
 
+TransferStationNode* get_station_node_in_graph(Station* station);
 
+
+TransferStationGraph* NewGraph();
+
+
+// Resets the status of the stations (known=FALSE .etc)
+// Should be called every time we want to use the graph
+// Returns TRUE;
+int ResetStatus();
 #endif //WUHAN_METRO_STATIONS_H

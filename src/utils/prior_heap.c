@@ -3,3 +3,6 @@
 //
 
 #include "prior_heap.h"
+#include "../models/models.h"
+
+

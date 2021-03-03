@@ -6,6 +6,7 @@
 #include "utils/hash.h"
 #include "stdio.h"
 #include "test/traverse.h"
+#include "handlers/paths.h"
 
 extern MetroSystem* metroSystem;
 extern StationTable stationTable;
@@ -22,5 +23,6 @@ int main() {
     LoadStations();
     LoadEdgesAndContexts();
 
+    GetShortestPath(GetStation("华中科技大学"), GetStation("石桥"));
     return 0;
 }
