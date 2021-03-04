@@ -9,7 +9,9 @@
 
 Path* GetShortestPath(Station* src,Station* dest);
 
-Station* UpdateAdjStatus(Station* station);
+Station* UpdateAdjStatusUponLen(Station* station);
+
+Station* UpdateAdjStatusUponTime(Station* station, Metro* cur_metro);
 
 int GetTransferNum(Path* path);
 

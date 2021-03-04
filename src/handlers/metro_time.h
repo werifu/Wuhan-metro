@@ -11,7 +11,11 @@
 #include "handler_models.h"
 
 // Consists of station2station_time, station_waiting_time, crowd_level
-double GetPathTime(Path* path, Time* now);
+double GetPathTime(Path* path, time_t now);
 
-int isDuring(SpecialCrowded* spc, Time* now);
+
+double GetTimeCoefficient(double crowded);
+
+
+double GetCrowded(TrafficFlow* trafficFlow, time_t now);
 #endif //WUHAN_METRO_METRO_TIME_H

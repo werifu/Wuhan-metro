@@ -10,4 +10,5 @@
 #define ERROR -1
 #define PANIC -2
 
+#define DAY_END_TIMESTAMP 86400
 #endif //WUHAN_METRO_COMMON_H

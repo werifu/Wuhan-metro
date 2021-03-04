@@ -7,7 +7,7 @@
 #include "../models/models.h"
 int TraverseSystem();
 
-void DFS_System();
+void DFS_System(Station* station);
 
 int TraverseMetroViaEdge(char* name);
 

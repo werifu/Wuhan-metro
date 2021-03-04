@@ -6,7 +6,7 @@
 #include "malloc.h"
 #include "common.h"
 #include "string.h"
-
+#include "times.h"
 extern TrafficFlow* trafficFlowTable[TRAFFIC_FLOW_TYPE_NUM];
 
 
@@ -50,10 +50,8 @@ int ChooseFlowType(const char* type) {
 
 int AddSpecialCrowd(int typeID, int startHour, int startMin, int endHour, int endMin, double crowded) {
     SpecialCrowded* newCrowded = (SpecialCrowded*)malloc(sizeof(SpecialCrowded));
-    newCrowded->startHour = startHour;
-    newCrowded->endHour = endHour;
-    newCrowded->startMinute = startMin;
-    newCrowded->endMinute = endMin;
+    newCrowded->startStp = Clock2Stamp(startHour, startMin);
+    newCrowded->endStp = Clock2Stamp(endHour, endMin);
     newCrowded->crowded = crowded;
     int specialNum = trafficFlowTable[typeID]->specialNum;
     trafficFlowTable[typeID]->specialCrowdeds[specialNum] = newCrowded;

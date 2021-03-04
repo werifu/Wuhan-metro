@@ -23,6 +23,6 @@ int main() {
     LoadStations();
     LoadEdgesAndContexts();
 
-    GetShortestPath(GetStation("华中科技大学"), GetStation("石桥"));
+
     return 0;
 }

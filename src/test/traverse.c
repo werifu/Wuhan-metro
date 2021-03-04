@@ -24,8 +24,15 @@ int TraverseSystem() {
 }
 
 
-void DFS_system(station) {
-
+void DFS_System(Station* station) {
+    if (!station || station->known) return;
+    printf("%s\n", station->name);
+    station->known = TRUE;
+    for (int i = 0; i < station->metroNum; i++) {
+        MetroContext* ctx = station->metroContexts[i];
+        DFS_System(ctx->nextStation);
+        DFS_System(ctx->lastStation);
+    }
 }
 
 

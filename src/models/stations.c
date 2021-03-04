@@ -113,6 +113,7 @@ int ResetStatus() {
         station->known = FALSE;
         station->costToHere = DBL_MAX;
         station->last_node = NULL;
+        station->arrivalTime = 0;
     }
     return TRUE;
 }

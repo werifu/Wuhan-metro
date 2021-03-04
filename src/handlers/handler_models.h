@@ -7,17 +7,12 @@
 #include "../models/common.h"
 #include "../models/models.h"
 
-typedef struct Time Time;
-struct Time {
-    int hour;
-    int minute;
-};
 
 typedef struct Path Path;
 struct Path {
-    int edgeNum;
-    Edge* edgesOnPath[MAX_STATION_NUM_LEN];
-    double length;
+    int     edgeNum;
+    Edge*   edgesOnPath[MAX_STATION_NUM_LEN];
+    double  length;
 };
 
 #endif //WUHAN_METRO_HANDLER_MODELS_H
