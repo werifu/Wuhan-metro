@@ -16,4 +16,6 @@ void PrintGraph();
 void PrintAdjVertex();
 
 void PrintFromDest(Station* station);
+
+void PrintCurStationArrivalTime(Station* station);
 #endif //WUHAN_METRO_TRAVERSE_H

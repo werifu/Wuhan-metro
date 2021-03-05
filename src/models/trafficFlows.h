@@ -20,4 +20,17 @@ int AddSpecialCrowd(int typeID, int startHour, int startMin, int endHour, int en
 // Returns the id of the type name(string).
 // For example: (ChooseFlowType("work") == 0) ==> true
 int ChooseFlowType(const char* type);
+
+
+double GetCrowded(TrafficFlow* trafficFlow, timestamp_t now);
+
+int SetDefaultCrowd(TrafficFlow* trafficFlow, double new_crowd);
+
+
+// Memory: Allocates sizeof(TrafficFlow)
+TrafficFlow* DeepCopyTrafficFlow(TrafficFlow* tobeCopied);
+
+
+int UseOnlyDefaultCrowd(Metro* metro);
+
 #endif //WUHAN_METRO_TRAFFICFLOWS_H

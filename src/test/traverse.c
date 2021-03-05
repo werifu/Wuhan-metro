@@ -102,3 +102,7 @@ void PrintFromDest(Station* station) {
     }
     printf("%s\n", station->name);
 }
+
+void PrintCurStationArrivalTime(Station* station) {
+    printf("%s, arrival time: %0.2f\n", station->name, station->arrivalTime);
+}

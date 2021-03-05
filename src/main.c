@@ -22,7 +22,8 @@ int main() {
     LoadMetros();
     LoadStations();
     LoadEdgesAndContexts();
-
-
+    GetShortestPath(GetStation("华中科技大学"), GetStation("天河机场"), 60000);
+    GetLeastTimePath(GetStation("华中科技大学"), GetStation("天河机场"), 60000);
+    GetAvoidingCrowdPath(GetStation("华中科技大学"), GetStation("天河机场"), 60000);
     return 0;
 }

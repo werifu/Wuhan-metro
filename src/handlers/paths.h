@@ -7,9 +7,13 @@
 
 #include "handler_models.h"
 
-Path* GetShortestPath(Station* src,Station* dest);
+Path* GetShortestPath(Station* src,Station* dest, timestamp_t startTime);
 
-Station* UpdateAdjStatusUponLen(Station* station);
+Path* GetLeastTimePath(Station* src, Station* dest, timestamp_t startTime);
+
+Path* GetAvoidingCrowdPath(Station* src, Station* dest, timestamp_t startTime);
+
+Station* UpdateAdjStatusUponLen(Station* station, Metro* cur_metro);
 
 Station* UpdateAdjStatusUponTime(Station* station, Metro* cur_metro);
 
@@ -20,4 +24,6 @@ int GetPathEdgeNumFromDest(Station* station);
 int SetPathFromDest(Path* result, Station* dest);
 
 Edge* GetEdgeBetweenAdj(Station* station1, Station* station2);
+
+int CanReach(Station* dest);
 #endif //WUHAN_METRO_PATHS_H

@@ -24,6 +24,7 @@
 
 #define TRANSFER_STATION_NUM_PER_METRO 30
 
+#define CROWD_PENALTY 120
 
 typedef struct Metro Metro;
 typedef struct Station Station;
@@ -35,38 +36,40 @@ typedef struct SpecialCrowded SpecialCrowded;
 typedef struct TransferStationGraph TransferStationGraph;
 typedef struct TransferStationNode TransferStationNode;
 typedef struct Time Time;
-typedef double time_t;
+typedef double timestamp_t;
 
 struct Metro {
-    char            name[MAX_METRO_NAME_LEN];		// 地铁线路名称
-    double 			length;                         //地铁物理长度
+    char            name[MAX_METRO_NAME_LEN];
+    double 			length;
     int             capacity;
-    int 			stationNum;	                    //站点数
-    Station*		stations[MAX_STATION_NUM_LEN];	//站点信息
-    Edge*			edges[MAX_EDGE_NUM_LEN];		//各边信息
-    TrafficFlow* 	trafficFlow;	// 流量
+    int 			stationNum;
+    Station*		stations[MAX_STATION_NUM_LEN];
+    Edge*			edges[MAX_EDGE_NUM_LEN];
+    TrafficFlow* 	trafficFlow;
+    timestamp_t     startTime;
+    timestamp_t     endTime;
 };
 
 struct Station {
-    char 		    name[MAX_STATION_NAME_LEN]; //地铁线名字
-    double 		    longitude;                  // 构造地图用的经纬度
+    char 		    name[MAX_STATION_NAME_LEN];
+    double 		    longitude;
     double          latitude;
-    int			    metroNum;		            //所在线路条数
-    MetroContext*   metroContexts[MAX_METRO_NUM_LEN];   // 铁道上下文
+    int			    metroNum;
+    MetroContext*   metroContexts[MAX_METRO_NUM_LEN];
 
     double      costToHere; // the metrics to this node from a start node
     int         known;
     Station*    last_node;
-    time_t      arrivalTime;
+    timestamp_t      arrivalTime;
 };
 
 struct MetroContext {
-    Metro*		metro;		//当前线路
-    Station*	nextStation;//当前线路的下一序号站，没有则为nullptr
+    Metro*		metro;
+    Station*	nextStation;
     Station*	lastStation;
-    Edge*		nextEdge;	//以当前站点为起点的边
-    Edge*		lastEdge;	//以当前站点为终点的边
-    int 		id;			//站点在该线路序号
+    Edge*		nextEdge;
+    Edge*		lastEdge;
+    int 		id;
 };
 
 struct Edge {
@@ -94,6 +97,7 @@ struct SpecialCrowded{
 struct TrafficFlow {
     int             specialNum;
     SpecialCrowded* specialCrowdeds[MAX_SPECIAL_CROWDEDS_LEN];
+    int             defaultOnly;
     double          defaultCrowded;
 };
 
@@ -121,7 +125,7 @@ struct TransferStationNode {
 struct Time {
     int     hour;
     int     minute;
-    time_t  second;
+    timestamp_t  second;
 };
 #endif //WUHAN_METRO_MODELS_H
 

@@ -6,13 +6,13 @@
 #define WUHAN_METRO_TIMES_H
 #include "models.h"
 
-time_t Clock2Stamp(int hour, int min);
+timestamp_t Clock2Stamp(int hour, int min);
 
-time_t Time2Stamp(Time* time);
+timestamp_t Time2Stamp(Time* time);
 
 // Returns TRUE
-int Stamp2Time(time_t stp, Time* result);
+int Stamp2Time(timestamp_t stp, Time* result);
 
-int IsDuring(SpecialCrowded* spc, time_t time);
+int IsDuring(SpecialCrowded* spc, timestamp_t time);
 
 #endif //WUHAN_METRO_TIMES_H

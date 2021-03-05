@@ -59,3 +59,37 @@ int AddSpecialCrowd(int typeID, int startHour, int startMin, int endHour, int en
     return TRUE;
 }
 
+
+int SetDefaultCrowd(TrafficFlow* trafficFlow, double new_crowd) {
+    if (!trafficFlow) return ERROR;
+    trafficFlow->defaultCrowded = new_crowd;
+    return TRUE;
+}
+
+
+double GetCrowded(TrafficFlow* trafficFlow, timestamp_t now) {
+    if (trafficFlow->defaultOnly) return trafficFlow->defaultCrowded;
+    int n = trafficFlow->specialNum;
+    for (int i = 0; i < n; i++) {
+        SpecialCrowded* spc = trafficFlow->specialCrowdeds[i];
+        if (IsDuring(spc, now)) {
+            return spc->crowded;
+        }
+    }
+    return trafficFlow->defaultCrowded;
+}
+
+
+TrafficFlow* DeepCopyTrafficFlow(TrafficFlow* tobeCopied) {
+    TrafficFlow* result = (TrafficFlow*)malloc(sizeof(TrafficFlow));
+    result->defaultCrowded = tobeCopied->defaultCrowded;
+    result->defaultOnly = FALSE;
+    memcpy(result->specialCrowdeds,tobeCopied->specialCrowdeds, sizeof(tobeCopied->specialCrowdeds));
+    result->specialNum = tobeCopied->specialNum;
+    return result;
+}
+
+int UseOnlyDefaultCrowd(Metro* metro) {
+    metro->trafficFlow->defaultOnly = TRUE;
+    return TRUE;
+}

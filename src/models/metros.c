@@ -60,7 +60,7 @@ int LoadMetros() {
         tok = strtok(NULL,"\n");
         strcpy(flowTypeName,tok);
         flowTypeID = ChooseFlowType(flowTypeName);
-        Metro* metro = NewMetro(name, length, capacity, trafficFlowTable[flowTypeID]);
+        Metro* metro = NewMetro(name, length, capacity, DeepCopyTrafficFlow(trafficFlowTable[flowTypeID]));
         InsertMetro(metro);
 
         metroSystem->metros[metroSystem->metroNum++] = metro;
@@ -76,5 +76,7 @@ Metro* NewMetro(char* name, double length, int capacity, TrafficFlow* trafficFlo
     metro->stationNum = 0;
     metro->capacity = capacity;
     metro->trafficFlow = trafficFlow;
+    metro->startTime = SIX_CLOCK_TIMESTAMP;
+    metro->endTime = TWENTY_THREE_CLOCK_TIMESTAMP;
     return metro;
 }

@@ -4,7 +4,7 @@
 
 #include "metro_time.h"
 #include "../models/times.h"
-
+#include "../models/trafficFlows.h"
 
 double GetTimeCoefficient(double crowded) {
     if (crowded < 0.2) {
@@ -20,29 +20,27 @@ double GetTimeCoefficient(double crowded) {
     }
 }
 
-double GetCrowded(TrafficFlow* trafficFlow, time_t now) {
-    int n = trafficFlow->specialNum;
-    for (int i = 0; i < n; i++) {
-        SpecialCrowded* spc = trafficFlow->specialCrowdeds[i];
-        if (IsDuring(spc, now)) {
-            return spc->crowded;
-        }
-    }
-    return trafficFlow->defaultCrowded;
-}
-
-
-double GetPathTime(Path* path, time_t now) {
+double GetPathTime(Path* path, timestamp_t now) {
     double result = 0;
     int edgeNum = path->edgeNum;
     for (int i = 0; i < edgeNum; i++) {
         Edge* e = path->edgesOnPath[i];
         double crowded = GetCrowded(e->metro->trafficFlow, now);
         double coefficient = GetTimeCoefficient(crowded);
-        result += (TWO_STATIONS_RUN_TIME+STATION_STOP_TIME)*coefficient;
+        if (coefficient == DBL_MAX) return DBL_MAX;
+        double cost = (TWO_STATIONS_RUN_TIME+STATION_STOP_TIME)*coefficient;
+        result += cost;
+        now += cost;
     }
 
     int transferNum = GetTransferNum(path);
     result += transferNum * TRANSFER_TIME;
     return result;
+}
+
+
+double GetArrivalTime(Path* path, timestamp_t startTime) {
+    double path_time = GetPathTime(path, startTime);
+    if (path_time == DBL_MAX) return DBL_MAX;
+    return startTime + path_time;
 }

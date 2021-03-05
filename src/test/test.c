@@ -7,7 +7,7 @@
 #include "../models/common.h"
 #include "../models/models.h"
 #include "../utils/hash.h"
-
+#include "../models/times.h"
 extern MetroSystem* metroSystem;
 extern StationTable stationTable;
 extern MetroTable metroTable;
@@ -58,7 +58,11 @@ int TestFlowType(char* metroName) {
     printf("metro %s's default crowded: %f\n", metro->name, flow->defaultCrowded);
     for (int i = 0; i < flow->specialNum; i++) {
         SpecialCrowded* crd = flow->specialCrowdeds[i];
-        printf("(%2d:%02d,%2d:%02d)=>%f\n", crd->startHour, crd->startMinute, crd->endHour, crd->endMinute, crd->crowded);
+        Time startTime;
+        Stamp2Time(crd->startStp, &startTime);
+        Time endTime;
+        Stamp2Time(crd->endStp, &endTime);
+        printf("(%2d:%02d,%2d:%02d)=>%f\n", startTime.hour, startTime.minute, endTime.hour, endTime.minute, crd->crowded);
     }
     return TRUE;
 }
